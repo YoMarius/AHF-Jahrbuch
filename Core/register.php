@@ -99,7 +99,7 @@ class Registration {
 				
 		$data = curl_exec($ch);
 		curl_close($ch);
-		if( preg_match( '/anzeigen"\s*>((\w*)\s(\w*))</i', $data, $matches ) != 1 ) return [ "status"=>MOODLE_GET_DATA_ERROR, "name"=>["",""] ];
+		if( preg_match( '/anzeigen"\s*>(([\w|\s]*)\s(\w*))</i', $data, $matches ) != 1 ) return [ "status"=>MOODLE_GET_DATA_ERROR, "name"=>["",""] ];
 		return ["status"=>MOODLE_GET_DATA_OK, "name"=>[$matches[2],$matches[3]] ];
 	}
 	//#######
