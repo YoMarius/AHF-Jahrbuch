@@ -13,6 +13,16 @@
 			$ret = []; while(($e = $result->fetch_array(MYSQL_ASSOC))) { $ret[] = $e; }
 			return $ret;
 		}
+		public static function highlightString( $string, $query ) {
+			$i = 0; $n = strlen( $query );
+			while( $i !== False ) {
+				if( ( $i = stripos( $string, $query, $i ) ) === False ) break;
+				$sub = "<span class='green-text text-lighten-1'>".substr( $string, $i, $n )."</span>";
+				$string = substr_replace( $string, $sub, $i, $n );
+				$i += strlen( $sub );
+			}
+			return $string;
+		}
 		
 	}
 ?>

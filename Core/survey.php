@@ -164,7 +164,9 @@ define( "SURVEY_NOT_VISIBLE", 2 );
 	public static function deleteSurvey( $id ) {
 		if(!($db = connectDB()) ) return false;
 		if(!($db->query("DELETE FROM `survey_meta`      WHERE `survey_meta_id` Like $id") ) ) return false;
-		if(!($db->query("DELETE FROM `survey_questions`, `survey_votes` WHERE `survey_id` Like $id AND `vote_question` Like `question_id`") ) ) return false;
+		if(!($db->query("DELETE FROM `survey_questions` WHERE `survey_id`  Like $id") ) ) return false;
+		if(!($db->query("DELETE FROM `survey_votes`     WHERE `survey__id` Like $id") ) ) return false;
+		return true;
 	}
 	//#######
 	//#
@@ -184,7 +186,9 @@ define( "SURVEY_NOT_VISIBLE", 2 );
 	public static function vote( $question_id, $user_id, $vote ) {
 		if(!($db = connectDB()) ) {error_log($db->error); return SURVEY_MYSQL_ERROR;}
 		if(!($result = $db->query( "SELECT 1 FROM `survey_votes` WHERE `vote_user` LIKE '$user_id' AND `vote_question` Like '$question_id' ") ) ) {$this->error=SURVEY_MYSQL_ERROR;return false;}
-		if($result->num_rows == 0) { if(!($x = $db->query( "INSERT INTO `survey_votes` ( `vote_user`, `vote_question`, `vote_value` ) VALUES ( '$user_id', '$question_id', $vote )") ) ) {return false;} }
+		if(!($rslt = $db->query( "SELECT `survey_id` FROM `survey_questions` WHERE `question_id` Like '$question_id' ") ) ) {$this->error=SURVEY_MYSQL_ERROR;return false;}
+		$survey_id=$rslt->fetch_array(MYSQL_NUM)[0];
+		if($result->num_rows == 0) { if(!($x = $db->query( "INSERT INTO `survey_votes` ( `vote_user`, `vote_question`, `vote_value`, `survey__id` ) VALUES ( '$user_id', '$question_id', $vote, $survey_id )") ) ) {return false; } }
 		else                       { if(!($x = $db->query( "UPDATE `survey_votes` SET `vote_value`=$vote WHERE `vote_user` LIKE '$user_id' AND `vote_question` Like '$question_id'") ) ) {return false;} }
 		return $db->query( "SELECT ownvote, SUM( `vote_value` ) as votes, '$question_id' as question FROM (SELECT `vote_value` as ownvote FROM `survey_votes` WHERE `vote_question` LIKE $question_id AND `vote_user` LIKE '$user_id') as ov, `survey_votes` WHERE `vote_question` LIKE $question_id" )->fetch_array(MYSQL_ASSOC);
 	}

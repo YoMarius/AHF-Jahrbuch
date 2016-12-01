@@ -32,7 +32,7 @@
 							$date = $itm['date'];
 							echo "
 							<li class='collection-item'>
-								<span class='title grey-text'>[$name]</span> <span>$content</span> <span class='light-green-text'>($date)</span>
+								<span class='title grey-text'>[$name]</span> <span>$content</span> <span class='light-green-text right'>($date)</span>
 								</p>
 							</li>
 							";

@@ -1,4 +1,4 @@
-<?php require_once $_SERVER["DOCUMENT_ROOT"]."/Core/index.php"; ?>
+<?php require_once $_SERVER["DOCUMENT_ROOT"]."/Core/index.php"; $login_user = Login::checkUser(); ?>
 <!DOCTYPE html>
 <html>
 	<head>

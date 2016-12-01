@@ -41,7 +41,7 @@
 
 		protected function loadFields() {
 			if(!($db = connectDB()) ) return false;
-			$id = $this->id;if(!($result = $db->query("SELECT `field_id`, `field_title`, `value`, `field_type`, `field_opt` FROM `profile_meta_fields` LEFT JOIN `profile_user_fields` ON `field_id` Like `meta_field_id` WHERE `user_id` IS NULL OR `user_id` Like '$id' ORDER BY `field_order`") ) ) return false;
+			$id = $this->id;if(!($result = $db->query("SELECT `field_id`, `field_title`, `value`, `field_type`, `field_opt` FROM `profile_meta_fields` LEFT JOIN (SELECT * FROM `profile_user_fields` WHERE `user_id` Like '$id') as `values` ON `field_id` Like `meta_field_id` ORDER BY `field_order`") ) ) return false;
 			if( $result->num_rows == 0 )  return false;
 			$ret = []; while(($e = $result->fetch_array(MYSQL_ASSOC))) { $ret[] = $e; }
 			$this->fields = $ret;

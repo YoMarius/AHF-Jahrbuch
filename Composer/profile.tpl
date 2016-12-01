@@ -7,7 +7,8 @@
 	<div class="row">
 		<div class="col s10 offset-s2 m4 offset-m4">
 			<div class="card-panel grey lighten-5 z-depth-1" style="position: relative">
-				<?php if(PROFILEUSR == Login::checkUser()["user_id"]) echo '<a href="./edit" class="btn-floating btn-large waves-effect waves-light red right" style="position: absolute; top: -9%; right: -9%"><i class="material-icons">edit</i></a>' ?>
+				<?php if(Login::isAdmin( $login_user["user_id"]) ) echo '<a id="adminbutton" href="javascript:'.(Login::isAdmin(PROFILEUSR)?"revokeAdmin()\"":"grantAdmin()\" enabled").' class="btn-floating btn-large waves-effect waves-light red right" style="position: absolute; top: -9%; right: -9%"><i class="material-icons">star</i></a>' ?>
+				<?php if(PROFILEUSR == $login_user["user_id"]) echo '<a href="./edit" class="btn-floating btn-large waves-effect waves-light red right" style="position: absolute; top: -9%; right: -9%"><i class="material-icons">edit</i></a>' ?>
 				<img src="https://cdn3.iconfinder.com/data/icons/avatar-set/512/Avatar02-512.png" alt="" class="circle responsive-img">
 				<h4 class="center"><?php if( !PROFILEEDIT ) echo $p->getFirstName()." ".$p->getLastName();
 										 else echo "<input name='firstname' value='".$p->getFirstName()."' /><input name='lastname' value='".$p->getLastName()."' />";?></h4>
@@ -53,4 +54,39 @@
      	<br><br>';
 
      ?>
+     <script>
+     var adb = document.getElementById( "adminbutton" )
+     function grantAdmin() {
+     	var x = new XMLHttpRequest()
+     	x.open( "GET", "/JSON/grantadmin/?user=<?php echo PROFILEUSR; ?>"  );
+     	x.onreadystatechange = function() {
+     		if( x.readyState == 4 ) {
+     			var a = eval(x.responseText);
+     			if( a ) { adb.href="javascript:revokeAdmin()"; adb.removeAttribute("enabled")}
+     			else    { adb.href="javascript:grantAdmin()";  adb.setAttribute("enabled","")}
+     		}
+     	}
+     	x.send();
+     }
+     function revokeAdmin() {
+     	var x = new XMLHttpRequest()
+     	x.open( "GET", "/JSON/revokeadmin/?user=<?php echo PROFILEUSR; ?>" );
+     	x.onreadystatechange = function() {
+     		if( x.readyState == 4 ) {
+     			var a = eval(x.responseText);
+     			if( a ) { adb.href="javascript:revokeAdmin()"; adb.removeAttribute("enabled")}
+     			else    { adb.href="javascript:grantAdmin()";  adb.setAttribute("enabled","")}
+     		}
+     	}
+     	x.send();
+     }
+     </script>
+     <style>
+     	#adminbutton {
+     		background: #ffeb3b !important;
+     	}
+     	#adminbutton[enabled] {
+     		background: #2196F3 !important;
+     	}
+     </style>
 </div>

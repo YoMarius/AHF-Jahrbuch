@@ -3,7 +3,7 @@
 <div class="container" action="#">
 <div class="row">
 <?php
-	$isAdmin = Login::isAdmin(Login::checkUser()["user_id"]);
+	$isAdmin = $login_user["user_id"];
 	foreach( (Survey::getSurveys(!$isAdmin)) as $survey ) {
 		$id     = $survey["survey_meta_id"];
 		$title  = $survey["survey_title"];

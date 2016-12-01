@@ -1,57 +1,97 @@
--- phpMyAdmin SQL Dump
--- version 4.0.10deb1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Erstellungszeit: 09. Nov 2016 um 21:44
--- Server Version: 5.5.53-0ubuntu0.14.04.1
--- PHP-Version: 5.5.9-1ubuntu4.20
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- Datenbank: `yearbook`
---
 CREATE DATABASE IF NOT EXISTS `yearbook` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `yearbook`;
 
--- --------------------------------------------------------
+DROP TABLE IF EXISTS `group_meta`;
+CREATE TABLE IF NOT EXISTS `group_meta` (
+  `group_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` tinytext NOT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`group_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=2 ;
 
---
--- Tabellenstruktur für Tabelle `login_admin`
---
+INSERT INTO `group_meta` (`group_id`, `name`, `description`) VALUES
+(1, 'roots', 'The gods');
+
+DROP TABLE IF EXISTS `group_participants`;
+CREATE TABLE IF NOT EXISTS `group_participants` (
+  `group_participants_id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL,
+  `user_id` text NOT NULL,
+  `mod` tinyint(1) NOT NULL,
+  PRIMARY KEY (`group_participants_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=8 ;
+
+INSERT INTO `group_participants` (`group_participants_id`, `group_id`, `user_id`, `mod`) VALUES
+(1, 1, 'LukaNagel99', 1),
+(2, 1, 'LukaNagel99', 0),
+(3, 1, 'LukaNagel99', 0),
+(4, 1, 'LukaNagel99', 0),
+(5, 1, 'LukaNagel99', 0),
+(6, 1, 'LukaNagel99', 0),
+(7, 1, 'LukaNagel99', 0);
+
+DROP TABLE IF EXISTS `images_linking`;
+CREATE TABLE IF NOT EXISTS `images_linking` (
+  `images_linking_id` int(11) NOT NULL AUTO_INCREMENT,
+  `image_id` int(11) NOT NULL,
+  `gallery_id` int(11) NOT NULL,
+  PRIMARY KEY (`images_linking_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=1 ;
+
+DROP TABLE IF EXISTS `images_path`;
+CREATE TABLE IF NOT EXISTS `images_path` (
+  `image_id` int(11) NOT NULL AUTO_INCREMENT,
+  `path` text NOT NULL,
+  PRIMARY KEY (`image_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=1 ;
+
+DROP TABLE IF EXISTS `image_galleries`;
+CREATE TABLE IF NOT EXISTS `image_galleries` (
+  `gallery_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` text NOT NULL,
+  PRIMARY KEY (`gallery_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=1 ;
+
+DROP TABLE IF EXISTS `log`;
+CREATE TABLE IF NOT EXISTS `log` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` text NOT NULL,
+  `content` text NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=13 ;
+
+INSERT INTO `log` (`log_id`, `name`, `content`, `date`) VALUES
+(1, 'Survey', 'LukaNagel99 added a Survey', '2016-11-19 16:05:01'),
+(2, 'Survey', 'LukaNagel99 edited Survey 4', '2016-11-19 16:05:17'),
+(3, 'Profile', 'LukaNagel99 changed her/his profile', '2016-11-19 18:42:27'),
+(4, 'Profile', 'LukaNagel99 changed her/his profile', '2016-11-19 18:53:11'),
+(5, 'Profile', 'LukaNagel99 changed her/his profile', '2016-11-19 19:02:49'),
+(6, 'Survey', 'LukaNagel99 edited Survey 2', '2016-11-19 20:55:46'),
+(7, 'Survey', 'LukaNagel99 added a Survey', '2016-11-19 20:58:24'),
+(8, 'Survey', ' deleted Survey 5', '2016-11-19 20:58:28'),
+(9, 'Profile', 'LukaNagel99 changed his/her profile', '2016-11-19 21:09:33'),
+(10, 'Profile', 'LukaNagel99 changed her/his profile', '2016-11-19 21:09:43'),
+(11, 'Survey', 'LukaNagel99 edited Survey 2', '2016-11-19 22:24:31'),
+(12, 'Survey', 'LukaNagel99 edited Survey 2', '2016-11-19 22:25:15');
 
 DROP TABLE IF EXISTS `login_admin`;
 CREATE TABLE IF NOT EXISTS `login_admin` (
   `uselesscol` int(11) NOT NULL AUTO_INCREMENT,
   `login_admin_id` text NOT NULL,
   PRIMARY KEY (`uselesscol`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=3 ;
-
---
--- TRUNCATE Tabelle vor dem Einfügen `login_admin`
---
-
-TRUNCATE TABLE `login_admin`;
---
--- Daten für Tabelle `login_admin`
---
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=2 ;
 
 INSERT INTO `login_admin` (`uselesscol`, `login_admin_id`) VALUES
-(2, 'LukaNagel99');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `login_info`
---
+(1, 'LukaNagel99');
 
 DROP TABLE IF EXISTS `login_info`;
 CREATE TABLE IF NOT EXISTS `login_info` (
@@ -59,23 +99,8 @@ CREATE TABLE IF NOT EXISTS `login_info` (
   `password` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci';
 
---
--- TRUNCATE Tabelle vor dem Einfügen `login_info`
---
-
-TRUNCATE TABLE `login_info`;
---
--- Daten für Tabelle `login_info`
---
-
 INSERT INTO `login_info` (`id`, `password`) VALUES
-('LukaNagel99', 'D3@ahfs4csv!');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `login_tokens`
---
+('LukaNagel99', '16845dc3a7c000f3b9009e5fc2b92bea');
 
 DROP TABLE IF EXISTS `login_tokens`;
 CREATE TABLE IF NOT EXISTS `login_tokens` (
@@ -84,50 +109,19 @@ CREATE TABLE IF NOT EXISTS `login_tokens` (
   `expires` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci';
 
---
--- TRUNCATE Tabelle vor dem Einfügen `login_tokens`
---
-
-TRUNCATE TABLE `login_tokens`;
---
--- Daten für Tabelle `login_tokens`
---
-
 INSERT INTO `login_tokens` (`user_id`, `token`, `expires`) VALUES
-('LukaNagel99', '1baf0f38f4d23f66bad8594996a8d051', '2016-11-01 20:50:59'),
-('LukaNagel99', '237202c19117e58bf8553df6915f6926', '2016-11-09 21:41:05'),
-('LukaNagel99', '89fb85eb75b4745abd9050c3fa902729', '2016-11-09 21:44:00');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `profiles`
---
+('LukaNagel99', '0135c1be94c5fb0facd1c18a5ce36c69', '2016-11-19 23:26:20');
 
 DROP TABLE IF EXISTS `profiles`;
 CREATE TABLE IF NOT EXISTS `profiles` (
   `user_id` text NOT NULL,
   `FName` text NOT NULL,
-  `LName` text NOT NULL
+  `LName` text NOT NULL,
+  `avatar` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci';
 
---
--- TRUNCATE Tabelle vor dem Einfügen `profiles`
---
-
-TRUNCATE TABLE `profiles`;
---
--- Daten für Tabelle `profiles`
---
-
-INSERT INTO `profiles` (`user_id`, `FName`, `LName`) VALUES
-('LukaNagel99', 'Lukas der', 'Nagel 2');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `profile_meta_fields`
---
+INSERT INTO `profiles` (`user_id`, `FName`, `LName`, `avatar`) VALUES
+('LukaNagel99', 'Lukas', 'Nagel', 0);
 
 DROP TABLE IF EXISTS `profile_meta_fields`;
 CREATE TABLE IF NOT EXISTS `profile_meta_fields` (
@@ -137,28 +131,20 @@ CREATE TABLE IF NOT EXISTS `profile_meta_fields` (
   `field_opt` text,
   `field_order` int(11) DEFAULT NULL,
   PRIMARY KEY (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=5 ;
-
---
--- TRUNCATE Tabelle vor dem Einfügen `profile_meta_fields`
---
-
-TRUNCATE TABLE `profile_meta_fields`;
---
--- Daten für Tabelle `profile_meta_fields`
---
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=12 ;
 
 INSERT INTO `profile_meta_fields` (`field_id`, `field_title`, `field_type`, `field_opt`, `field_order`) VALUES
-(1, 'TEST', 4, '', 4),
-(2, 'RadioButtonsMulti', 3, 'OPT1|OPT2|OPT3|OPT4', 3),
-(3, 'RadioButtons', 2, 'OPT1|OPT2|OPT3|OPT4', 2),
-(4, 'Input', 1, '', 1);
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `profile_user_fields`
---
+(1, 'Spitzname', 1, '', 0),
+(2, 'Geburtstag', 1, '', 1),
+(3, 'LK''s', 1, '', 2),
+(4, 'Lieblingsfach', 1, '', 3),
+(5, 'Lieblingslehrer', 1, '', 4),
+(6, 'Zukunftstr&auml;ume', 1, '', 5),
+(7, 'Lieblingsflachwitz', 1, '', 6),
+(8, 'Die Lage meines Spindes war', 2, 'Sehr Gut|Gut|Geht so|Kacke|Welchen meiner drei meinst du?', 7),
+(9, 'Ultimativer &uuml;berlebenstipp', 1, '', 8),
+(10, 'Worte zum abschied', 4, '', 9),
+(11, 'Welche Abscnitte waren am besten?', 3, 'Prim|Sek I|Sek II', 10);
 
 DROP TABLE IF EXISTS `profile_user_fields`;
 CREATE TABLE IF NOT EXISTS `profile_user_fields` (
@@ -167,28 +153,8 @@ CREATE TABLE IF NOT EXISTS `profile_user_fields` (
   `user_id` text,
   `value` text,
   PRIMARY KEY (`uf_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=12 ;
 
---
--- TRUNCATE Tabelle vor dem Einfügen `profile_user_fields`
---
-
-TRUNCATE TABLE `profile_user_fields`;
---
--- Daten für Tabelle `profile_user_fields`
---
-
-INSERT INTO `profile_user_fields` (`uf_id`, `meta_field_id`, `user_id`, `value`) VALUES
-(1, 1, 'LukaNagel99', 'Du Kleiner\r\nHurensohn\r\nPisser nutÃ¶Ã¶Ã¶'),
-(3, 3, 'LukaNagel99', 'OPT3'),
-(4, 4, 'LukaNagel99', 'ejoooo'),
-(5, 2, 'LukaNagel99', 'OPT1|OPT2|OPT3');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `survey_meta`
---
 
 DROP TABLE IF EXISTS `survey_meta`;
 CREATE TABLE IF NOT EXISTS `survey_meta` (
@@ -197,28 +163,10 @@ CREATE TABLE IF NOT EXISTS `survey_meta` (
   `survey_description` text NOT NULL,
   `survey_visible` smallint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`survey_meta_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=6 ;
-
---
--- TRUNCATE Tabelle vor dem Einfügen `survey_meta`
---
-
-TRUNCATE TABLE `survey_meta`;
---
--- Daten für Tabelle `survey_meta`
---
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=3 ;
 
 INSERT INTO `survey_meta` (`survey_meta_id`, `survey_title`, `survey_description`, `survey_visible`) VALUES
-(1, 'TEST SURVEY', 'FIRST SURVEY EVER', 1),
-(2, 'TEST SURVEY', 'FIRST SURVEY EVER', 1),
-(3, 'The third survey', 'But the first one to be edited', 0),
-(5, 'Man kann keine Surveys lÃ¶schen', 'Is aber kein Problem', 0);
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `survey_questions`
---
+(2, 'Abschluss Mottos', 'VorschlÃ¤ge einfach per Whatsapp', 1);
 
 DROP TABLE IF EXISTS `survey_questions`;
 CREATE TABLE IF NOT EXISTS `survey_questions` (
@@ -226,44 +174,13 @@ CREATE TABLE IF NOT EXISTS `survey_questions` (
   `question_id` int(11) NOT NULL AUTO_INCREMENT,
   `question_title` text NOT NULL,
   PRIMARY KEY (`question_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=26 ;
-
---
--- TRUNCATE Tabelle vor dem Einfügen `survey_questions`
---
-
-TRUNCATE TABLE `survey_questions`;
---
--- Daten für Tabelle `survey_questions`
---
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=5 ;
 
 INSERT INTO `survey_questions` (`survey_id`, `question_id`, `question_title`) VALUES
-(1, 1, 'TEST'),
-(1, 2, 'HALLO'),
-(1, 3, 'HALLO'),
-(1, 4, 'HALLO'),
-(1, 5, 'HALLO'),
-(1, 6, 'fasfasf'),
-(1, 7, 'fasfasf'),
-(1, 8, 'fasfasf'),
-(1, 9, 'fasfasf'),
-(1, 10, 'fasfasf'),
-(1, 11, 'fasfasf'),
-(1, 12, 'fasfasf'),
-(1, 13, 'fasfasf'),
-(1, 14, 'fasfasf'),
-(1, 15, 'fasfasf'),
-(3, 20, 'Wonderful one'),
-(3, 22, 'Sucks'),
-(3, 23, 'Boring'),
-(3, 24, 'Exciting'),
-(3, 25, 'Cool');
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `survey_votes`
---
+(2, 1, 'Den semi lustigen und unkreativen Spruch von Julian'),
+(2, 2, 'AbiPur, 13 Jahre Stoff und trotzdem nich high'),
+(2, 3, 'Sayonara AbiGos'),
+(2, 4, '( Hier kÃ¶nnnte ihre Werbung stehen )');
 
 DROP TABLE IF EXISTS `survey_votes`;
 CREATE TABLE IF NOT EXISTS `survey_votes` (
@@ -272,51 +189,17 @@ CREATE TABLE IF NOT EXISTS `survey_votes` (
   `vote_user` text NOT NULL,
   `vote_question` int(11) NOT NULL,
   PRIMARY KEY (`vote_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=34 ;
-
---
--- TRUNCATE Tabelle vor dem Einfügen `survey_votes`
---
-
-TRUNCATE TABLE `survey_votes`;
---
--- Daten für Tabelle `survey_votes`
---
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='latin1_swedish_ci' AUTO_INCREMENT=9 ;
 
 INSERT INTO `survey_votes` (`vote_id`, `vote_value`, `vote_user`, `vote_question`) VALUES
-(1, 1, 'LukaNagel99', 1),
-(2, -1, 'NOUSER', 1),
-(3, 1, 'NOUSER2', 1),
-(4, -1, 'NOUSER', 2),
-(5, -1, 'LukaNagel99', 2),
-(6, 1, 'LukaNagel99', 3),
-(7, -1, 'LukaNagel99', 8),
-(8, -1, 'LukaNagel99', 4),
-(9, -1, 'LukaNagel99', 5),
-(10, -1, 'LukaNagel99', 6),
-(11, -1, 'LukaNagel99', 7),
-(12, -1, 'LukaNagel99', 9),
-(13, -1, 'LukaNagel99', 10),
-(14, -1, 'LukaNagel99', 11),
-(15, -1, 'LukaNagel99', 12),
-(16, -1, 'LukaNagel99', 13),
-(17, -1, 'LukaNagel99', 15),
-(18, -1, 'LukaNagel99', 14),
-(19, 0, 'INITVOTE', 16),
-(20, 0, 'INITVOTE', 17),
-(21, 0, 'INITVOTE', 18),
-(22, 0, 'INITVOTE', 19),
-(23, 0, 'INITVOTE', 20),
-(24, 0, 'INITVOTE', 21),
-(25, 0, 'INITVOTE', 22),
-(26, 0, 'INITVOTE', 23),
-(27, 0, 'INITVOTE', 24),
-(28, 0, 'INITVOTE', 25),
-(29, 1, 'LukaNagel99', 20),
-(30, -1, 'LukaNagel99', 22),
-(31, -1, 'LukaNagel99', 23),
-(32, 1, 'LukaNagel99', 24),
-(33, 1, 'LukaNagel99', 25);
+(1, 0, 'INITVOTE', 1),
+(2, 0, 'INITVOTE', 2),
+(3, 0, 'INITVOTE', 3),
+(4, 0, 'INITVOTE', 4),
+(5, -1, 'LukaNagel99', 1),
+(6, 1, 'LukaNagel99', 4),
+(7, 1, 'LukaNagel99', 3),
+(8, 1, 'LukaNagel99', 2);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
