@@ -40,3 +40,34 @@ a{
 div #surveys , #groups{
   padding: 0;
 }
+.modal-trigger img:hover {
+    filter: blur(15px);
+    opacity: 0.5;
+  }
+#gallery img{
+  float: left;
+  padding: 7px;
+}
+#addmem{
+  float: left;
+  padding: 5px;
+}
+#loading{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 999;
+    display:none;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+#gallery{
+  margin-top: 15px;
+  width: 100%;
+}
+.brand-logo{
+  padding-left: 0.5em !important;
+}
+
