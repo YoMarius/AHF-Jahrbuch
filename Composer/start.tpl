@@ -88,8 +88,8 @@
 								}
 								?>
 							</div>
-
 						</ul>
+						<button>Add Group</button>
 					</div>
 
 			</div>

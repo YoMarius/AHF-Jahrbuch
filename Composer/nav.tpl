@@ -24,4 +24,10 @@
 			<?php }?>
 		</ul>
 	</div>
+	<style>
+		.side-nav li {
+			width: 100%;
+			float: left;
+		}
+	</style>
 </nav>

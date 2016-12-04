@@ -58,12 +58,10 @@ class Group {
 		$id = $this->id; $db->query( "UPDATE `group_meta` SET `name`='$name', `description`='$dsc' WHERE `group_id` Like $id" );
 		loadMeta();
 	}
-	public function addMember( $id ) {
+	public function addMember( $usr ) {
 		$db = connectDB();
-		$id = $this->id;
-		if( !($r = $db->query( "SELECT 1 FROM `group_participants` WHERE `user_id` Like $id" ) ) ) return;
-		if( $r->num_rows > 0 ) return;
-		$db->query( "UPDATE `group_meta` SET `name`='$name', `description`='$dsc' WHERE `group_id` Like $id" );
+		if( $this->isMember( $usr ) ) return true;
+		$id = $this->id; $db->query( "INSERT INTO `group_participants` SET `group_id`='$id', `$user_id`='$usr', `mod`=0" );
 	}
 	public function removeMember( $id ) {
 		$db = connectDB();
@@ -78,7 +76,7 @@ class Group {
 		$db->query( "DELETE FROM `group_meta` WHERE `group_id` Like $id" );
 		$db->query( "DELETE FROM `group_participants` WHERE `group_id` Like $id" );
 	}
-	public static function addGroup( $name, $desc ) {
+	public static function createGroup( $name, $desc ) {
 		$db = connectDB();
 		$id = $this->id;
 		if( $db->query( "INSERT INTO `group_meta` SET `name`='$name', `description`='$description'" ) ) return;
@@ -88,8 +86,15 @@ class Group {
 	
 	public function isMember( $user ) {
 		if(!($db = connectDB()) ) {$this->error=LOGIN_MYSQL_ERROR;return false;}
-		$id = $this->id;if(!($result = $db->query( "SELECT 1 FROM `group_participants` WHERE `group_id` Like '$id' AND `user_id` Like '$user'") ) ) return false;
+		$id = $this->id; if(!($result = $db->query( "SELECT 1 FROM `group_participants` WHERE `group_id` Like '$id' AND `user_id` Like '$user'") ) ) return false;
 		return $result->num_rows > 0;
+	}
+	
+	public static function inGroups($user) {
+		if(!($db = connectDB()) ) {$this->error=LOGIN_MYSQL_ERROR;return false;}
+		if(!($result = $db->query( "SELECT * FROM `group_meta` as a LEFT JOIN `group_participants` as b ON a.`group_id` LIKE b.`group_id` WHERE b.`user_id` LIKE 'LukaNagel99'") ) ) return false;
+		$ret = []; while(($e = $result->fetch_array(MYSQL_ASSOC))) { $ret[] = $e; }
+		return $ret;
 	}
 	//#######
 	//#
@@ -107,11 +112,11 @@ class Group {
 	//#	    Grants moderator rights to User by user id
 	//#
 	//#######
-	public static function grantMod( $user, $usr ) {
+	public static function grantMod( $user, $usr, $group ) {
 		if( Group::isMod( $user ) ) {
 			if(!($db = connectDB()) ) {$this->error=LOGIN_MYSQL_ERROR;return false;}
-			if(!($result = $db->query( "UPDATE `group_participants` SET `mod`=1 WHERE `user_id` Like '$usr'") ) ) return false;
-			$log( "Groups", "$usr granted $user moderator rights" );
+			if(!($result = $db->query( "UPDATE `group_participants` SET `mod`=1 WHERE `user_id` Like '$usr' AND `group_id` Like '$group'") ) ) return false;
+			$log( "Groups", "$usr granted $user moderator rights for group $group" );
 			return $result->num_rows > 0;
 		}
 	}
@@ -120,11 +125,11 @@ class Group {
 	//#	    Revokes moderator rights to User by user id
 	//#
 	//#######
-	public static function revokeMod( $user, $usr) {
+	public static function revokeMod( $user, $usr, $group) {
 		if( Group::isMod( $user ) ) {
 			if(!($db = connectDB()) ) {$this->error=LOGIN_MYSQL_ERROR;return false;}
-			if(!($result = $db->query( "UPDATE `group_participants` SET `mod`=1 WHERE `user_id` Like '$usr'") ) ) return false;
-			$log( "Profile", "$usr revoked $user moderator rights" );
+			if(!($result = $db->query( "UPDATE `group_participants` SET `mod`=0 WHERE `user_id` Like '$usr' AND `group_id` Like '$group'") ) ) return false;
+			$log( "Profile", "$usr revoked $user moderator rights for group $group" );
 			return $result->num_rows > 0;
 		}
 	}

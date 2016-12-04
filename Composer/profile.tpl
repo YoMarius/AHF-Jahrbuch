@@ -22,10 +22,10 @@
      		$value = $field["value"];
      		echo'
 			 	<div class="row row_profil">
-					<div class="col s6">
-						<p class="right green-text">'.$title.'</p>
+					<div class="col s10 offset-s2 m2 offset-m3">
+						<h5 class="green-text">'.$title.'</h5>
 					</div>
-				<div class="col s6">';
+				<div class="col s8 offset-s3 m5 offset-m1">';
 		if( PROFILEEDIT ) {
 			switch( $field["field_type"] ) {
 				case 1: echo '<input class="left" name="'.$field["field_id"].'" value="'.$value.'">'; break;
@@ -36,10 +36,10 @@
 		}
 		else {
 			switch( $field["field_type"] ) {
-				case  1: echo '<p class="left">'.$value.'</p>'; break;
-				case  2: echo '<p class="left">'; echo $field["value"]; echo "</p>"; break;
-				case  3: echo '<p class="left">'; foreach( explode( "|", $field["value"] ) as $str ) echo '<div class="chip">'.$str.'</div>'; echo '</p>'; break;
-				case  4: echo '<p class="left">'.$value.'</p>'; break;
+				case  1: echo '<p class="">'.$value.'</p>'; break;
+				case  2: echo '<p class="">'; echo $field["value"]; echo "</p>"; break;
+				case  3: echo '<p class="">'; foreach( explode( "|", $field["value"] ) as $str ) echo '<div class="chip">'.$str.'</div>'; echo '</p>'; break;
+				case  4: echo '<p class="">'.$value.'</p>'; break;
 				default: break;
 			}
 
@@ -52,8 +52,22 @@
      	</div>
      	</form>
      	<br><br>';
-
      ?>
+     <div class="row">
+     <h2>Gruppen</h2>
+     	<?php
+     	foreach(Group::inGroups(PROFILEUSR) as $group ) {
+     		$name = $group["name"];
+			$lnk = "/group/".$group["group_id"]."/";
+			echo "
+			<a href='$lnk' class='col s6 m3' style=\"padding: 2%\">
+				<div class='card-panel grey lighten-5 z-depth-1'>
+					<h4 class=\"center\">$name</h4>
+				</div>
+			</a>";
+		}
+		?>
+     </div>
      <script>
      var adb = document.getElementById( "adminbutton" )
      function grantAdmin() {

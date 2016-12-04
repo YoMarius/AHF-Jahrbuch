@@ -13,12 +13,10 @@
 .brand-logo{
   padding-left: 0.5em !important;
 }
-.row_profil{
-  width: 80% !important;
-  margin: 2em auto 2em auto !important;
+.row_value{
+	margin-left: 1%;
 }
 .row_profil div p{
-  margin: 0 !important;
 }
 .chip{
   line-height: 25px;
