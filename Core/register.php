@@ -133,7 +133,9 @@ class Registration {
 			$this->error = $moodleData["status"];
 			return false;
 		}
-		$password = md5( $password );
+		/*Use password_hash as it is much more secure than simply MD5 which is outdated
+		http://php.net/manual/en/function.password-hash.php*/
+		$password = password_hash( $password , PASSWORD_BCRYPT );
 		$status = $this->writeEntry( $username, $password, $moodleData["name"][0], $moodleData["name"][1] );
 		if( $status != REGISTRATION_SUCCESSFULL ) {
 			$this->error = $status;
