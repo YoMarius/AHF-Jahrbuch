@@ -28,4 +28,13 @@
 			echo "<div class='col card-panel grey lighten-5 z-depth-1 s12 l8 offset-l2'><h5><a href='/Surveys/$a/'>$s</a></h5></div>";
 		}
 	?>
+	<h1>Gruppen</h1>
+	<?php
+		$res = Search::forGroups( QUERY );
+		foreach( $res as $itm ) {
+			$s = $itm["title"];
+			$a = $itm["link"];
+			echo "<div class='col card-panel grey lighten-5 z-depth-1 s12 l8 offset-l2'><h5><a href='/Group/$a/'>$s</a></h5></div>";
+		}
+	?>
 </div>

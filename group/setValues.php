@@ -4,9 +4,9 @@
 		$g = $_POST["group"]?$_POST["group"]:false;
 		if( Group::isMod($g, $usr) ) {
 			if( isset($_POST["newgroup"]) ) {
-				$g = (Group::addGroup( $_POST["name"], $_POST["desc"] ))->getID();
+				$g = (Group::addGroup( $_POST["name"], $_POST["desc"] ));
 				http_response_code( 302 );
-				header( "Location: /group/$g/" );
+				header( "Location: /profile/me/" );
 				return;
 			}
 			if( !$g ) break;
@@ -18,12 +18,28 @@
 				header( "Location: /group/$g/" );
 				return;
 			}
-			if( isset($_POST["addmember"]) ) {
+			if( isset($_POST["addmember"])) {
 				$gr = new Group( $g ); $u = $_POST["addmember"];
 				$gr->addMember( $u );
-				$log( "GROUP", "$usr added $u to Group($g)".$gr->getName() );
-				http_response_code( 302 );
-				header( "Location: /group/$g/" );
+				return;
+			}
+			if( isset($_POST["removeMember"])) {
+				$gr = new Group( $g ); $u = $_POST["removeMember"];
+				$gr->removeMember( $u );
+				return;
+			}
+			if( isset($_POST["grantMod"])) {
+				$gr = new Group( $g ); $u = $_POST["grantMod"];
+				$gr->grantMod(  $u, $gr->getID(), $usr );
+				echo $gr->getID();
+				echo $u;
+				return;
+			}
+			if( isset($_POST["revokeMod"])) {
+				$gr = new Group( $g ); $u = $_POST["revokeMod"];
+				$gr->revokeMod(  $u, $gr->getID(), $usr );
+				echo $gr->getID();
+				echo $u;
 				return;
 			}
 		}

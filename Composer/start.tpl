@@ -88,7 +88,15 @@
 								}
 								?>
 							</div>
+							<li class='collection-item'>
+								<form action="/group/setValues.php" method="post">
+									<input type="text" style="display:none;" id="newgroup" name="newgroup" value='true'  />
+									<input type="text"  name="name" value='' placeholder="Gruppenname" />
+									<input type="text"  name="desc" value='' placeholder="Beschreibung" />
+						      <input type="submit" id="senden" name="submit" value="Erstellen" />
 
+								</form>
+							</li>
 						</ul>
 					</div>
 

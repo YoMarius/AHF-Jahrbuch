@@ -1,14 +1,22 @@
 <?php
+
 	$p = new Profile( PROFILEUSR );
 	if( PROFILEEDIT ) echo "<form method='get' action='/profile/setValues.php'>";
+
 ?>
 <br><br><br><br><br>
 <div class="container">
+		<img src="http://i.imgur.com/jtkTPvb.gif" class="right" id="loading">
 	<div class="row">
 		<div class="col s10 offset-s2 m4 offset-m4">
 			<div class="card-panel grey lighten-5 z-depth-1" style="position: relative">
 				<?php if(PROFILEUSR == Login::checkUser()["user_id"]) echo '<a href="./edit" class="btn-floating btn-large waves-effect waves-light red right" style="position: absolute; top: -9%; right: -9%"><i class="material-icons">edit</i></a>' ?>
-				<img src="https://cdn3.iconfinder.com/data/icons/avatar-set/512/Avatar02-512.png" alt="" class="circle responsive-img">
+				<ul class="tabs" style="margin-bottom:5px;">
+					<li class="tab col s6"><a href="#profilbild">Profil-</a></li>
+					<li class="tab col s6"><a href="#kinderbild">Kinderbild</a></li>
+				</ul>
+				<div id="profilbild"><a href="#uploadview" class="modal-trigger"><img src="/media/img/<?php echo $p->getID(); ?>/profilbild" alt="" class="circle responsive-img"></a></div>
+				<div id="kinderbild"><a href="#uploadviewkind" class="modal-trigger"><img src="/media/img/<?php echo $p->getID(); ?>/kinderbild" alt="" class="circle responsive-img"></a></div>
 				<h4 class="center"><?php if( !PROFILEEDIT ) echo $p->getFirstName()." ".$p->getLastName();
 										 else echo "<input name='firstname' value='".$p->getFirstName()."' /><input name='lastname' value='".$p->getLastName()."' />";?></h4>
 			</div>
@@ -54,3 +62,21 @@
 
      ?>
 </div>
+<div id="uploadview" class="modal bottom-sheet">
+    <div class="modal-content">
+      <h4>Profilbild hochladen:</h4>
+      <?php Upload::showUploadSection('profil');?>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
+    </div>
+  </div>
+	<div id="uploadviewkind" class="modal bottom-sheet">
+	    <div class="modal-content">
+	      <h4>Profilbild hochladen:</h4>
+	      <?php Upload::showUploadSection('profilkind');?>
+	    </div>
+	    <div class="modal-footer">
+	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Abbrechen</a>
+	    </div>
+	  </div>
