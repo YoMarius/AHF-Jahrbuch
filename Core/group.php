@@ -79,7 +79,7 @@ class Group {
 	public static function createGroup( $name, $desc ) {
 		$db = connectDB();
 		$id = $this->id;
-		if( $db->query( "INSERT INTO `group_meta` SET `name`='$name', `description`='$description'" ) ) return;
+		if( $db->query( "INSERT INTO `group_meta` SET `name`='$name', `description`='$desc'" ) ) return;
 		return new Group( $db->query("SELECT LAST_INSERT_ID()")->fetch_array(MYSQL_NUM)[0] );
 	}
 	
